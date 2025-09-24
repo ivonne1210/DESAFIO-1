@@ -1,8 +1,6 @@
 #include "RLE_com.h"
-#include <iostream>
 #include <cstring>
 using std::strlen;
-using namespace std;
 
 
 char* comprimirRLE(const char* entrada) {
@@ -11,7 +9,6 @@ char* comprimirRLE(const char* entrada) {
     // Peor caso: cada caracter diferente → 2*n
     char* salida = new char[2 * n + 1];
     unsigned int longitud = 0;
-    cout << n;
 
     unsigned int i = 0;
     while (i < n) {

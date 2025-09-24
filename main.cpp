@@ -18,7 +18,6 @@ int main() {
     if (contenido && encrip) {
         char* compresion = comprimirRLE(contenido);
         bool estado = Buscar(compresion, encrip);
-
         cout << estado << endl;
 
         delete[] contenido;

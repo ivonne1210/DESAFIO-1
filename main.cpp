@@ -8,26 +8,31 @@
 #include "RLE_com.h"
 #include "Encriptado.h"
 #include "Busqueda.h"
+#include "D_Encriptado.h"
+#include "RLE_descom.h"
 
 using namespace std;
 
 int main() {
-    size_t tam, tam1, outTam;
+    size_t tam, tam1, outTam, salTam;
     unsigned char* contenido = leerArchivo("ejemplo.txt", tam);
-    unsigned char* encrip = leerArchivo("Encriptado3.txt", tam1);
+    unsigned char* encrip = leerArchivo("Encriptado1.txt", tam1);
     if (contenido && encrip) {
         unsigned char* compresion = comprimirRLE(contenido, tam, outTam);
-        //bool estado = Buscar(compresion, encrip);
+        int rot, clave;
+        bool estado = Buscar(compresion, encrip, outTam, tam1, rot, clave);
 
-        //unsigned char* encriptado = encriptacion(compresion, 3, 0x40);
-
-        for (size_t i = 0; i < outTam; i++) {
-            printf("%02X ", compresion[i]);
+        if (estado){
+            delete[] contenido;
+            delete[] compresion;
+            unsigned char* descrip = desencriptado(encrip, rot, clave, tam1);
+            unsigned char* descom = descomprimirRLE(descrip, tam1, salTam);
+            cout << descom;
         }
-    printf("\n");
+    
         delete[] contenido;
         delete[] compresion;
-       // delete[] encriptado;
+        delete[] encrip;
     }
     return 0;
 }

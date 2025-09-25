@@ -1,39 +1,29 @@
-#include <iostream>
-#include <fstream>
 #include "RLE_descom.h"
-#include <cstring>
-using std::strlen;
+#include <cstddef>  // size_t
 
-char* descomprimirRLE(const char* entrada) {
-    unsigned int n = strlen(entrada);
+unsigned char* descomprimirRLE(const unsigned char* entrada, size_t nEntrada, size_t &nSalida) {
 
-    // Peor caso: cada par número-caracter representa un solo caracter → n/2 repeticiones máximas
-    // Pero como no sabemos cuántas repeticiones hay, asumimos una expansión máxima razonable
-    char* salida = new char[n * 9 + 1]; // reserva generosa
-    unsigned int longitud = 0;
+    size_t capacidad = 256 * (nEntrada / 3 + 1);
+    unsigned char* salida = new unsigned char[capacidad];
 
-    unsigned int i = 0;
-    while (i < n) {
-        // leer número
-        char numero[20];
-        int k = 0;
-        while (i < n && isdigit(entrada[i]) && k < 19) {
-            numero[k++] = entrada[i++];
+    nSalida = 0;
+    size_t i = 0;
+
+    while (i + 2 < nEntrada) {
+        unsigned char sep = entrada[i];
+        unsigned char count = entrada[i + 1];
+        unsigned char ch = entrada[i + 2];
+        i += 3;
+
+        if (sep != 0x00) {
+            delete[] salida;
+            return nullptr; 
         }
-        numero[k] = '\0';
-        int repeticiones = atoi(numero);
 
-        // leer caracter
-        if (i < n) {
-            char caracter = entrada[i++];
-
-            // escribir repeticiones
-            for (int r = 0; r < repeticiones; ++r) {
-                salida[longitud++] = caracter;
-            }
+        for (unsigned int r = 0; r < count; r++) {
+            salida[nSalida++] = ch;
         }
     }
 
-    salida[longitud] = '\0';
     return salida;
 }

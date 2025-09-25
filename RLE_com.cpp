@@ -2,9 +2,7 @@
 #include <cstring>
 #include <cstddef>
 using std::strlen;
-#include <iostream>
 
-using namespace std;
 
 unsigned char* comprimirRLE(const unsigned char* entrada, size_t n, size_t &outSize) {
 

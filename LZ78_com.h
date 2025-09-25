@@ -3,7 +3,7 @@
 
 #include <cstddef> // para size_t
 
-char* leerArchivo(const char* nombreArchivo, size_t &tamano);
+unsigned char* leerArchivo(const char* nombreArchivo, size_t &tamano);
 char* LZ78compresion(char *caracter1);
 
 #endif

@@ -19,8 +19,7 @@ char* comprimirRLE(const char* entrada) {
         while (i + contador < n && entrada[i + contador] == actual) {
             ++contador;
         }
-
-        salida[longitud++] = '0' + contador;
+        salida[longitud++] = (char)contador;
 
         // escribir el caracter
         salida[longitud++] = actual;

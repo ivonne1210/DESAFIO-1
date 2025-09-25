@@ -9,7 +9,7 @@ bool Buscar(const char* entrada, const char* encriptado) {
 
     for (int rot = 0; rot < 8; rot++) {
         for (int clave = 0; clave < 256; clave++) {
-            char* candidata = encriptacion(entrada, rot, clave);
+            unsigned char* candidata = encriptacion(entrada, rot, clave);
 
             // Buscar candidata dentro de encriptado
             for (size_t pos = 0; pos + nEntrada <= nEncrip; pos++) {

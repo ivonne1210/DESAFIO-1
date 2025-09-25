@@ -3,7 +3,7 @@
 #include <fstream>
 using namespace std;
 
-char* leerArchivo(const char* nombreArchivo, size_t &tamano) {
+unsigned char* leerArchivo(const char* nombreArchivo, size_t &tamano) {
     ifstream archivo(nombreArchivo, ios::binary | ios::ate);
     if (!archivo) {
         cout << "No se pudo abrir el archivo." << endl;
@@ -13,11 +13,12 @@ char* leerArchivo(const char* nombreArchivo, size_t &tamano) {
     tamano = archivo.tellg();
     archivo.seekg(0, ios::beg);
 
-    char* buffer = new char[tamano + 1];
-    archivo.read(buffer, tamano);
-    buffer[tamano] = '\0';
+    unsigned char* buffer = new unsigned char[tamano + 1]; // +1 solo si quieres poner un 0 final
+    archivo.read(reinterpret_cast<char*>(buffer), tamano);
 
+    buffer[tamano] = 0; // null-byte opcional, por si quieres tratarlo como texto
     archivo.close();
+
     return buffer;
 }
 

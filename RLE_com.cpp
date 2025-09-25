@@ -1,17 +1,20 @@
 #include "RLE_com.h"
 #include <cstring>
+#include <cstddef>
 using std::strlen;
+#include <iostream>
 
+using namespace std;
 
-char* comprimirRLE(const char* entrada) {
-    unsigned int n = strlen(entrada);
+unsigned char* comprimirRLE(const unsigned char* entrada, size_t n, size_t &outSize) {
 
     // Peor caso: cada caracter diferente → 2*n
-    char* salida = new char[2 * n + 1];
-    unsigned int longitud = 0;
+    unsigned char* salida = new unsigned char[3 * n];
+    outSize = 0;
 
     unsigned int i = 0;
     while (i < n) {
+
         char actual = entrada[i];
         int contador = 1;
 
@@ -19,15 +22,16 @@ char* comprimirRLE(const char* entrada) {
         while (i + contador < n && entrada[i + contador] == actual) {
             ++contador;
         }
-        salida[longitud++] = (char)contador;
+
+        salida[outSize++] = '\0';
+
+        salida[outSize++] = (unsigned char)contador;
 
         // escribir el caracter
-        salida[longitud++] = actual;
+        salida[outSize++] = actual;
 
         // avanzar
         i += contador;
     }
-
-    salida[longitud] = '\0';
     return salida;
 }

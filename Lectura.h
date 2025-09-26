@@ -1,5 +1,5 @@
-#ifndef LZ78_COM_H
-#define LZ78_COM_H
+#ifndef LECTURA_H
+#define LECTURA_H
 
 #include <cstddef> // para size_t
 

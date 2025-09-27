@@ -1,41 +1,41 @@
 #include <cstddef>
-#include <iostream>
 
 // Descomprimir LZ78
 unsigned char* descomprimirLZ78(const unsigned char* entrada, size_t n, size_t &k) {
-    // Reservamos memoria para la salida (peor caso: n * 3)
     unsigned char* salida = new unsigned char[n * 3];
     k = 0;
+    size_t pos = 0;
 
-    size_t pos = 0; // posición de lectura en entrada
-
-    while (pos < n) {
+    while (pos + 2 < n) {
         unsigned char sep = entrada[pos];
-        unsigned char indice = entrada[pos + 1]; // índice de referencia
-        unsigned char c = entrada[pos + 2];     // nuevo carácter
+        unsigned char indice = entrada[pos + 1];
+        unsigned char c = entrada[pos + 2];
         pos += 3;
 
-        // reconstruir cadena desde el índice
-        unsigned char stack[1024]; // pila temporal para guardar la secuencia
+        unsigned char stack[1024];
         int top = 0;
 
         while (indice != 0) {
-            unsigned char prev_indice = entrada[(indice * 3) - 2]; // índice anterior
-            unsigned char prev_char   = entrada[(indice * 3)-1];     // carácter guardado
 
-            stack[top++] = prev_char; // guardamos carácter en la pila
-            indice = prev_indice;     // seguimos retrocediendo
+            if (indice >= pos / 3 || (indice * 3) >= n) {
+                delete[] salida;
+                return nullptr; // índice inválido
+            }
+
+            unsigned char prev_indice = entrada[(indice * 3) - 2];
+            unsigned char prev_char   = entrada[(indice * 3) - 1];
+
+            stack[top++] = prev_char;
+            indice = prev_indice;
         }
 
-        // vaciar pila en salida
         while (top > 0) {
             salida[k++] = stack[--top];
         }
 
-        // agregar el nuevo carácter
         salida[k++] = c;
     }
 
-    salida[k] = '\0'; // terminamos con null
+    salida[k] = '\0';
     return salida;
 }

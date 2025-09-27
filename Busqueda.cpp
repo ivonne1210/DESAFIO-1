@@ -1,11 +1,15 @@
 #include "Busqueda.h"
 #include "Encriptado.h"
+#include "D_Encriptado.h"
+#include "LZ78_descomp.h"
 #include <cstddef>
-#include <cstdint>
+#include <iostream>
 #include <cstdio>
 #include <cstring>
 
-bool Buscar(const unsigned char *entrada,
+using namespace std;
+
+bool BuscarRLE(const unsigned char *entrada,
             const unsigned char *encriptado,
             size_t nEntrada,
             size_t nEncrip,
@@ -51,3 +55,49 @@ bool matchComprimido(const unsigned char *pista,
     // debe consumirse toda la pista
     return (iP >= nPista);
 }
+
+bool BuscarLZ(const unsigned char* encriptado,
+              size_t nEncriptado,
+              const unsigned char* pista,
+              size_t nPista,
+              int &rotEn,
+              int &claveEn)
+{
+    for (int rot = 0; rot < 8; rot++) {
+        for (int clave = 0; clave <= 255; clave++) {
+            unsigned char *descrip = desencriptado(encriptado, rot, clave, nEncriptado);
+
+            if (descrip[0] != 0x00) {
+                delete[] descrip;
+                continue;
+            }
+
+            size_t tReal;
+            unsigned char* descom = descomprimirLZ78(descrip, nEncriptado, tReal);
+            delete[] descrip;
+
+            if (!descom || tReal == 0) {
+                delete [] descom;
+                continue;
+            }
+
+            bool encontrado = false;
+            for (size_t pos = 0; pos + nPista <= tReal; pos++) {
+                if (memcmp(descom + pos, pista, nPista) == 0) {
+                    encontrado = true;
+                    rotEn = rot;
+                    claveEn = clave;
+                    break;
+                }
+            }
+            if (encontrado) {
+                cout << descom << endl;
+                delete[] descom;
+                return true;
+            }
+            delete[] descom;
+        }
+    }
+    return false;
+}
+

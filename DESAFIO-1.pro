@@ -6,7 +6,7 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 SOURCES += \
-    LZ78_comp.cpp \
+    LZ78_descomp.cpp \
     Lectura.cpp \
     main.cpp \
     Busqueda.cpp \
@@ -19,7 +19,7 @@ HEADERS += \
     Busqueda.h \
     Encriptado.h \
     D_Encriptado.h \
-    LZ78_comp.h \
+    LZ78_descomp.h \
     Lectura.h \
     RLE_com.h \
     RLE_descom.h

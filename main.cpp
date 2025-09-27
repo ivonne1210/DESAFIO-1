@@ -10,7 +10,7 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
-#include <LZ78_comp.h>
+#include "LZ78_descomp.h"
 
 using namespace std;
 
@@ -18,7 +18,7 @@ int main()
 {
     size_t tam; //tam1, outTam,
     size_t salTam;
-    unsigned char *contenido = leerArchivo("Pista2.txt", tam);
+    unsigned char *contenido = leerArchivo("Encriptado2.txt", tam);
 
     /*unsigned char *encrip = leerArchivo("Encriptado3.txt", tam1);
 
@@ -41,14 +41,12 @@ int main()
     }*/
 
 
-    unsigned char *comprimido = comprimirLZ78(contenido, tam, salTam);
-    unsigned char *encriptar = encriptacion(comprimido,3,0x5A,salTam);
-    for (int var = 0; var < salTam; ++var) {
-          printf("%02X",encriptar[var], " ");
-    }
-
+    unsigned char *comprimido = desencriptado(contenido, 3,0x5A, tam);
+    unsigned char *encriptar = descomprimirLZ78(comprimido, tam, salTam);
+    cout << encriptar;
     delete[] comprimido;
     delete[] encriptar;
+
 
     return 0;
 }
